@@ -9,13 +9,14 @@
     android:layout_gravity="center_horizontal"
     android:id="@+id/mainall"
     tools:context=".MainActivity">
+
     <ImageView
+        android:id="@+id/butteranimation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/butteranimation"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="20sp"
-        android:background="@drawable/butter01"
-        android:layout_centerVertical="true"/>
+        android:background="@drawable/butter01" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -220,210 +221,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center|top"
-        android:orientation="vertical"
-        android:paddingTop="90sp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/gameonebutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/genericbutton"
-                android:text="@string/game_1"
-                android:textColor="@color/white"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/gametwobutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/genericbutton"
-                android:text="@string/game_2"
-                android:textColor="@color/white"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/nameyournewpettext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp"
-            android:text="@string/name_your_new_pet"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
-        <EditText
-            android:id="@+id/nameedittext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:ems="10"
-            android:inputType="text"
-            android:maxLength="20"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:visibility="gone">
-
-            <requestFocus />
-        </EditText>
-
-        <Button
-            android:id="@+id/createnewpetbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/genericbutton"
-            android:paddingLeft="25sp"
-            android:paddingRight="25sp"
-            android:text="@string/create_a_new_pet"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/openoldpetbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/genericbutton"
-            android:paddingLeft="40sp"
-            android:paddingRight="40sp"
-            android:text="@string/open_a_pet_already_created"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/deadpettext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="10sp"
-            android:text="@string/your_pet_died"
-            android:textColor="@color/red"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/linearlayoutlistofpets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center|top"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/listofpets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/genericbutton"
-                android:paddingLeft="30sp"
-                android:paddingRight="30sp"
-                android:textColor="@color/white"
-                android:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/deletebutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/deletebutton"
-                android:textColor="@color/white"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/guessanumbertext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/genericbutton"
-            android:paddingLeft="40sp"
-            android:paddingTop="12sp"
-            android:paddingRight="40sp"
-            android:text="@string/guess_a_number"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/alreadyguessedletters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/hiddenword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/genericbutton"
-            android:paddingLeft="30sp"
-            android:paddingTop="13sp"
-            android:paddingRight="30sp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/guessaletter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10sp"
-            android:text="@string/guess_a_letter"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/numberedittext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:ems="1"
-                android:inputType="number"
-                android:maxLength="1"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:visibility="gone">
-
-                <requestFocus />
-            </EditText>
-
-            <EditText
-                android:id="@+id/letteredittext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:ems="1"
-                android:inputType="text"
-                android:maxLength="1"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:visibility="gone">
-
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/genericbutton"
-            android:text="@string/submit"
-            android:textColor="@color/white"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -462,14 +259,15 @@
         android:layout_alignRight="@id/bottomstuff"
         android:id="@+id/bonetreat"
         android:background="@drawable/bone0"/>
+
     <TextView
+        android:id="@+id/loadedpetname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottomstuff"
         android:layout_centerHorizontal="true"
-        android:id="@+id/loadedpetname"
-        android:textColor="@color/white"
-        android:text="@string/loadedpetname" />
+        android:text="@string/loadedpetname"
+        android:textColor="@color/white" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

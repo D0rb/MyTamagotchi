@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="57dp"
         android:layout_marginTop="288dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:background="@drawable/cat" />
 
     <ImageView
         android:id="@+id/dogImg"
@@ -25,7 +25,7 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="287dp"
         android:layout_marginEnd="59dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:background="@drawable/dog" />
 
     <TextView
         android:id="@+id/textView"
@@ -46,4 +46,15 @@
         android:layout_marginEnd="111dp"
         android:layout_marginBottom="289dp"
         android:text="Dog" />
+
+    <EditText
+        android:id="@+id/texitTextPetsName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="227dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Pet's name here" />
 </RelativeLayout>
