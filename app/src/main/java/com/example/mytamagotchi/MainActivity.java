@@ -2,6 +2,7 @@ package com.example.mytamagotchi;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -13,7 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mytamagotchi.Ulities.TimeHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             "  \"pets\": [\n" +
             "    {\n" +
             "      \"Type\": \"Dog\",\n" +
+            "      \"Date\": \"\",\n" +
             "      \"Name\": \"Doggie\",\n" +
             "      \"Age\": 10,\n" +
             "      \"Hunger\": 10,\n" +
@@ -45,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
             "      \"Happy\": 10,\n" +
             "      \"Health\": 10,\n" +
             "      \"Death\": 10\n" +
-            "      \n" +
             "    },\n" +
             "    {\n" +
             "      \"Type\": \"Cat\",\n" +
             "      \"Name\": \"Cattie\",\n" +
+            "      \"Date\": \"\",\n" +
             "      \"Age\": 10,\n" +
             "      \"Hunger\": 10,\n" +
             "      \"Water\": 10,\n" +
@@ -59,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             "    }\n" +
             "  ]\n" +
             "}";
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

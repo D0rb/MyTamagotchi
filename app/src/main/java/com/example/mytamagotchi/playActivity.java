@@ -1,11 +1,15 @@
 package com.example.mytamagotchi;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.mytamagotchi.Ulities.TimeHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +21,7 @@ public class playActivity extends AppCompatActivity {
     private JSONArray petJson;
     private JSONObject jsonObject;
     private String tempString;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,9 @@ public class playActivity extends AppCompatActivity {
         Log.d("Dor",tempString);
         try {
             jsonObject = new JSONObject(tempString);
+            jsonObject.put("Age",(jsonObject.get("Date")) );
+            TimeHandler timeHandler = new TimeHandler();
+            Log.d("Time", String.valueOf(timeHandler.calcDate(timeHandler.getCurrentDate())));
             ui_txt_age.setText(jsonObject.getString("Age"));
             ui_txt_hunger.setText(jsonObject.getString("Hunger"));
             ui_txt_water.setText(jsonObject.getString("Water"));
