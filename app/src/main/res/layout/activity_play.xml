@@ -9,7 +9,6 @@
     android:layout_gravity="center_horizontal"
     android:id="@+id/mainall"
     tools:context=".MainActivity">
-
     <ImageView
         android:id="@+id/butteranimation"
         android:layout_width="wrap_content"
@@ -73,6 +72,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="1.0">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -118,6 +118,7 @@
                 android:textSize="16sp"
                 android:id="@+id/hungerinttext"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -277,6 +278,7 @@
         android:id="@+id/bottomstuff"
         android:background="@drawable/bottominfo">
         <ImageButton
+            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
@@ -284,13 +286,16 @@
             android:background="@drawable/meal"
             android:id="@+id/mealbutton"/>
         <ImageButton
+            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
             android:layout_marginRight="4sp"
             android:background="@drawable/treat"
             android:id="@+id/treatbutton"/>
+
         <ImageButton
+            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
@@ -298,6 +303,7 @@
             android:background="@drawable/water"
             android:id="@+id/waterbutton"/>
         <ImageButton
+            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
@@ -305,6 +311,7 @@
             android:background="@drawable/play"
             android:id="@+id/playbutton"/>
         <ImageButton
+            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
@@ -312,6 +319,7 @@
             android:background="@drawable/punish"
             android:id="@+id/punishbutton"/>
         <ImageButton
+            android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4sp"
