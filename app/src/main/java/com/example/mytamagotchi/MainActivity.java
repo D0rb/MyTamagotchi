@@ -1,5 +1,6 @@
 package com.example.mytamagotchi;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -32,34 +33,35 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
-    private Button btnNew;
     private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
-    private ArrayAdapter<String> adapter;
+    private SharedPreferences.Editor prefEdtior;
     private JSONObject settings;
     private JSONArray pets;
     private String[] petsArray;
     private TimeHandler timeHandler = new TimeHandler();
+    private String[] maintitle;
     Integer[] imgid= {
             R.drawable.cat, R.drawable.dog,
     };
             Intent intent;
     String tempJson = "{\n" +
             "  \"settings\": {\n" +
-            "    \"count\": 1\n" +
+            "    \"count\": 3\n" +
             "  },\n" +
             "  \"pets\": [\n" +
             "    {\n" +
+            "      \"count\": 0,\n" +
             "      \"Type\": \"Dog\",\n" +
             "      \"Name\": \"Doggie\",\n" +
             "      \"Date\": \"2021/10/03\",\n" +
             "      \"Time\": \"16:31:38\",\n" +
-            "      \"lastTime\": \"\",\n" +
-            "      \"lastDate\": \"\",\n" +
+            "      \"lastTime\": \"16:31:38\",\n" +
+            "      \"lastDate\": \"2021/10/13\",\n" +
             "      \"Age\": 10,\n" +
             "      \"Hunger\": 10,\n" +
             "      \"Water\": 10,\n" +
@@ -72,24 +74,33 @@ public class MainActivity extends AppCompatActivity {
             "      \"Name\": \"Cattie\",\n" +
             "      \"Date\": \"2021/10/03\",\n" +
             "      \"Time\": \"16:31:38\",\n" +
-            "      \"lastTime\": \"\",\n" +
-            "      \"lastDate\": \"\",\n" +
+            "      \"lastTime\": \"16:31:38\",\n" +
+            "      \"lastDate\": \"2021/10/13\",\n" +
             "      \"Age\": 10,\n" +
             "      \"Hunger\": 10,\n" +
             "      \"Water\": 10,\n" +
             "      \"Happy\": 10,\n" +
             "      \"Health\": 10,\n" +
-            "      \"Death\": 10\n" +
+            "      \"Death\": 10,\n" +
+            "      \"count\": 1\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"Type\": \"Cat\",\n" +
+            "      \"Name\": \"Cattie\",\n" +
+            "      \"Date\": \"2021/10/03\",\n" +
+            "      \"Time\": \"16:31:38\",\n" +
+            "      \"lastTime\": \"16:31:38\",\n" +
+            "      \"lastDate\": \"2021/10/13\",\n" +
+            "      \"Age\": 10,\n" +
+            "      \"Hunger\": 10,\n" +
+            "      \"Water\": 10,\n" +
+            "      \"Happy\": 10,\n" +
+            "      \"Health\": 10,\n" +
+            "      \"Death\": 10,\n" +
+            "      \"count\": 2\n" +
             "    }\n" +
             "  ]\n" +
             "}";
-
-
-    String[] maintitle ={
-            "Title 1","Title 2",
-            "Title 3","Title 4",
-            "Title 5",
-    };
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -98,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.listView);
-        btnNew = (Button) findViewById(R.id.btnNew);
         Log.d("test",timeHandler.getCurrentDate());
         Log.d("test",timeHandler.getCurrentTime());
+        Objects.requireNonNull(getSupportActionBar()).hide();
         /*
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         String date = timeHandler.getCurrentTime();
@@ -113,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("test",(timeHandler.calc2(expiredDate,expiredDate1)));
         Log.d("test", "asdasdasd");
         */
+        Log.d("JSONPRING",tempJson);
         try {
 
             settings = new JSONObject(tempJson).getJSONObject("settings");
@@ -126,27 +138,38 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            String strJson = pref.getString("JSON", "0");
-            if (strJson != null) {
-                try {
-                    JSONObject response = new JSONObject(strJson);
-                    String[] mStrings = new String[10];
-                    listViewAdapter adapter = new listViewAdapter(this, pets,maintitle);
-                    listView = (ListView) findViewById(R.id.listView);
-                    listView.setAdapter(adapter);
+            pref = getSharedPreferences("tama", Context.MODE_PRIVATE);
+            tempJson = pref.getString("JSON", "0");
 
-                } catch (JSONException e) {
-                    Log.d("dor", "null");
-                }
-            } else {
-                listViewAdapter adapter = new listViewAdapter(this, pets,maintitle);
-                listView = (ListView) findViewById(R.id.listView);
-                listView.setAdapter(adapter);
+            if (tempJson.equals("0")) {
+                prefEdtior = pref.edit();
+                prefEdtior.putString("JSON",tempJson);
+                prefEdtior.apply();
+                tempJson = pref.getString("JSON", "0");
             }
-        } catch (NullPointerException e) {
-            listViewAdapter adapter = new listViewAdapter(this, pets,maintitle);
+
+            int count = 0;
+            try {
+
+                count = settings.getInt("count");
+                maintitle = new String[count];
+                for(int i=0;i<count;i++){
+                    maintitle[i] = pets.getJSONObject(i).getString("Name");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            listViewAdapter adapter = new listViewAdapter(this, pets, maintitle);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(adapter);
+
+            {
+
+            }
+        } catch (NullPointerException e) {
             Log.d("dor", "NullPointerException");
         }
 
@@ -158,21 +181,21 @@ public class MainActivity extends AppCompatActivity {
 
                 intent = new Intent(getApplicationContext(), playActivity.class);
                 intent.putExtra("game", "1"); // not a new game
-                try {
-                    intent.putExtra("petsArray", pets.getJSONObject(position).toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                intent.putExtra("petsArray", pets.toString());
+                intent.putExtra("pos", position);
                 startActivity(intent);
 
             }
         });
 
     }
-    public void onClick(View v) {
+    public void onClick(View v) throws JSONException {
         switch (v.getId()) {
             case R.id.btnNew:
                 intent = new Intent(this, newGameActivity.class);
+                intent.putExtra("petsArray", tempJson);
+                intent.putExtra("pos", settings.getInt("count"));
+                Log.d("JSONPRING",tempJson);
                 startActivity(intent);
                 break;
         }
@@ -190,5 +213,22 @@ public class MainActivity extends AppCompatActivity {
         Date stringDate = simpledateformat.parse(aDate, pos);
         return stringDate;
 
+    }
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
     }
 }

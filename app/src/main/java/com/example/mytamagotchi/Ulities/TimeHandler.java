@@ -74,7 +74,9 @@ public class TimeHandler {
         int mins = (int) ((millis / (1000 * 60)) % 60);
         String diff = hours + ":" + mins;
         String[] result_temp = diff.split(":");
+
         int[] result = {Integer.parseInt(result_temp[0]), Integer.parseInt(result_temp[1])};
+        Log.d("Dor","result "+result[0]+" "+result[1]);
         return result;
 
     }
@@ -116,7 +118,6 @@ public class TimeHandler {
         SimpleDateFormat formatter;
         ParsePosition pos = new ParsePosition(0);
         Date stringDate;
-
         if(aDate==null) return null;
         switch (action){
             case 1:
@@ -125,14 +126,11 @@ public class TimeHandler {
                  return stringDate;
             case 2:
                 formatter = new SimpleDateFormat("yyyy-MM-dd");
-                return stringDate = formatter.parse(aDate, pos);
+                stringDate = formatter.parse(aDate, pos);
+                return stringDate;
+
         }
         return null;
     }
-//    public int getHours(String date){
-//
-//    }
-//    public int getMins(String date){
-//
-//    }
+
 }
