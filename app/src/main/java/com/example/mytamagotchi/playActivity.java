@@ -3,32 +3,25 @@ package com.example.mytamagotchi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.example.mytamagotchi.Ulities.DateObj;
 import com.example.mytamagotchi.Ulities.TimeHandler;
 import com.example.mytamagotchi.Ulities.valuesObj;
-import com.mikhaellopez.circularfillableloaders.CircularFillableLoaders;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -40,8 +33,8 @@ public class playActivity extends AppCompatActivity {
     private ImageButton mealbutton , treatbutton ,waterbutton , playbutton , punishbutton , shotbutton;
     Bundle extras;
     private JSONArray petJson;
-    private JSONObject jsonObject;
-    private String tempString;
+    private JSONObject petJsonObj,mainJsonObj;
+    private String petString,mainJSON;
     private Intent intent;
     private TimeHandler timeHandler;
     private SharedPreferences pref;
@@ -59,47 +52,42 @@ public class playActivity extends AppCompatActivity {
         ui_txt_happy = (TextView) findViewById(R.id.happyinttext);
         ui_txt_health = (TextView) findViewById(R.id.healthinttext);
         ui_txt_pets_name = (TextView) findViewById(R.id.loadedpetname);
+
         Objects.requireNonNull(getSupportActionBar()).hide();
         pref = getSharedPreferences("tama", Context.MODE_PRIVATE);
         extras = getIntent().getExtras();
-        tempString = (String) extras.getString("petsArray");
-        pos = extras.getInt("count");
-        YoYo.with(Techniques.RotateIn)
-                .duration(700)
-                .repeat(5)
-                .playOn(findViewById(R.id.waterinttext));
-        YoYo.with(Techniques.Bounce)
-                .duration(700)
-                .repeat(5)
-                .playOn(findViewById(R.id.loadedpetname));
-        Log.d("Dozr",tempString);
 
+        mainJSON = extras.getString("mainJson");
+
+        pos = extras.getInt("pos");
         try {
-            petJson = new JSONArray(tempString);
-            jsonObject = petJson.getJSONObject(extras.getInt("pos"));
+            mainJsonObj = new JSONObject(mainJSON);
+
+            petString = mainJsonObj.getJSONArray("pets").toString();
+            petJson = new JSONArray(petString);
+            petJsonObj = petJson.getJSONObject(extras.getInt("pos"));
             TimeHandler timeHandler = new TimeHandler();
             currentDate = timeHandler.getCurrentDate();
             currentTime = timeHandler.getCurrentTime();
-            v_date = jsonObject.getString("Date");
-            v_lastDate = jsonObject.getString("Date");
-            v_time = jsonObject.getString("Time");
-            v_lasTime = jsonObject.getString("lastTime");
+            v_date = petJsonObj.getString("Date");
+            v_lastDate = petJsonObj.getString("Date");
+            v_time = petJsonObj.getString("Time");
+            v_lasTime = petJsonObj.getString("lastTime");
             Log.d("Dor","v_lastDate "+v_time);
             Log.d("Dor","currentTime "+currentTime);
-
 
             int HoursAndMins[] = timeHandler.caclTimeArray(timeHandler.stringToDate(v_time,1),timeHandler.stringToDate(currentTime,1));
             DateObj dateObj = new DateObj(v_date , v_time , v_lasTime , v_lastDate,
                     HoursAndMins[0],HoursAndMins[1],0
             );
 
-            jsonObject.put("Age",(String.valueOf(timeHandler.calcDate(jsonObject.getString("Date")))));
-            ui_txt_age.setText(jsonObject.getString("Age"));
-            ui_txt_hunger.setText(jsonObject.getString("Hunger"));
-            ui_txt_water.setText(jsonObject.getString("Water"));
-            ui_txt_happy.setText(jsonObject.getString("Happy"));
-            ui_txt_health.setText(jsonObject.getString("Health"));
-            ui_txt_pets_name.setText(jsonObject.getString("Name"));
+            petJsonObj.put("Age",(String.valueOf(timeHandler.calcDate(petJsonObj.getString("Date")))));
+            ui_txt_age.setText(petJsonObj.getString("Age"));
+            ui_txt_hunger.setText(petJsonObj.getString("Hunger"));
+            ui_txt_water.setText(petJsonObj.getString("Water"));
+            ui_txt_happy.setText(petJsonObj.getString("Happy"));
+            ui_txt_health.setText(petJsonObj.getString("Health"));
+            ui_txt_pets_name.setText(petJsonObj.getString("Name"));
 
 
 //            Date date2 = timeHandler.stringToDate(jsonObject.getString("Date"),2);
@@ -214,20 +202,42 @@ public class playActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onStop() {
+        Log.d("debuging","onStop");
+        try {
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("Hunger",ui_txt_hunger.getText());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("Water",ui_txt_water.getText());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("Health",ui_txt_health.getText());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("lastDate",timeHandler.getCurrentDate());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("lastTime",timeHandler.getCurrentTime());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         pref = getSharedPreferences("tama", Context.MODE_PRIVATE);
         prefEdtior = pref.edit();
-        prefEdtior.putString("JSON",petJson.toString());
+        prefEdtior.putString("JSON",mainJsonObj.toString());
         prefEdtior.apply();
         super.onStop();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onDestroy() {
+        Log.d("debuging","onDestroy");
+        try {
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("Hunger",ui_txt_hunger.getText());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("Water",ui_txt_water.getText());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("Health",ui_txt_health.getText());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("lastDate",timeHandler.getCurrentDate());
+            mainJsonObj.getJSONArray("pets").getJSONObject(pos).put("lastTime",timeHandler.getCurrentTime());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         pref = getSharedPreferences("tama", Context.MODE_PRIVATE);
         prefEdtior = pref.edit();
-        prefEdtior.putString("JSON",petJson.toString());
+        prefEdtior.putString("JSON",mainJsonObj.toString());
         prefEdtior.apply();
         super.onDestroy();
     }

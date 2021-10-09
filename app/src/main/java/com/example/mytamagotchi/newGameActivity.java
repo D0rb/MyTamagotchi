@@ -1,5 +1,6 @@
 package com.example.mytamagotchi;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -13,7 +14,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mytamagotchi.Ulities.TimeHandler;
-import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,9 +40,9 @@ public class newGameActivity extends AppCompatActivity {
             "      \"Health\": 0,\n" +
             "      \"Death\": 0\n" +
             "    }\n";
-    private String JSONs;
+    private String mainJsonString;
     private String jsonString;
-    private JSONObject jsonObject,tempJsonObj;
+    private JSONObject tempJsonObj,jsonObject;
     private JSONArray jsonArray;
     private Bundle extras;
     int count = 0;
@@ -56,12 +56,13 @@ public class newGameActivity extends AppCompatActivity {
         petNameTextEdit = (EditText) findViewById(R.id.texitTextPetsName);
         extras = getIntent().getExtras();
         count = Integer.valueOf(extras.getInt("pos"));
-
+        pref = getSharedPreferences("tama", Context.MODE_PRIVATE);
         try {
-            jsonObject = new JSONObject(tempString);
-            JSONs = extras.getString("petsArray");
-            jsonArray = new JSONArray(JSONs);
-
+            tempJsonObj = new JSONObject(tempString);
+            mainJsonString = extras.getString("mainJson");
+            jsonObject = new JSONObject(extras.getString("mainJson"));
+            jsonArray = jsonObject.getJSONArray("pets");
+            Log.d("newGameLog" ,"New Game Activity "+String.valueOf(mainJsonString));
         } catch (JSONException e) {
            Log.d("newGameLog" ,"line 67 "+e.toString());
         }
@@ -71,14 +72,27 @@ public class newGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
+                    pref = getSharedPreferences("tama", Context.MODE_PRIVATE);
+                    prefEdtior = pref.edit();
+                    tempJsonObj.put("Name",petNameTextEdit.getText());
+                    tempJsonObj.put("Type","Cat");
+                    tempJsonObj.put("Date",new TimeHandler().getCurrentDate());
+                    tempJsonObj.put("Time",new TimeHandler().getCurrentTime());
+                    if(jsonArray.isNull(0)){
+                        Log.d("newGameLog" , "if");
+                        jsonObject.getJSONArray("pets").put(tempJsonObj);
+                    }else{
+                        Log.d("newGameLog" , "else");
+                        jsonObject.getJSONArray("pets").put(tempJsonObj);
+                    }
 
-                    jsonObject.put("Name",petNameTextEdit.getText());
-                    jsonObject.put("Type","Cat");
-                    jsonObject.put("Date",new TimeHandler().getCurrentDate());
-
-                    jsonArray.put(jsonArray.length()+1,jsonObject);
-                    jsonString = jsonArray.toString();
-                    intent.putExtra("petsArray",jsonString);
+                    jsonString = jsonObject.toString();
+                    intent.putExtra("mainJSON",jsonString);
+                    intent.putExtra("pos",0);
+                    prefEdtior.putString("JSON",jsonObject.toString());
+                    prefEdtior.putBoolean("firstrun",false);
+                    prefEdtior.apply();
+                    Log.d("newGameLog","New Game Activity "+jsonObject.toString());
                     startActivity(intent);
                 } catch (JSONException e) {
                     Log.d("newGameLog" ,"line 82 "+e.toString());
@@ -90,10 +104,10 @@ public class newGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    jsonObject.put("Name",petNameTextEdit.getText());
-                    jsonObject.put("Type","Dog");
-                    jsonObject.put("Date",new TimeHandler().getCurrentDate());
-                    jsonArray.put(jsonArray.length()+1,jsonObject);
+                    tempJsonObj.put("Name",petNameTextEdit.getText());
+                    tempJsonObj.put("Type","Dog");
+                    tempJsonObj.put("Date",new TimeHandler().getCurrentDate());
+                    jsonArray.put(jsonArray.length()+1,tempJsonObj);
                     jsonString = jsonArray.toString();
                     intent.putExtra("petsArray",jsonString);
                     startActivity(intent);
