@@ -7,6 +7,8 @@ public class valuesObj {
     private int happy;
     private int health;
 
+    public valuesObj(){}
+
     public valuesObj(int age , int hunger , int water , int happy , int health){
         age = this.age;
         water = this.water;

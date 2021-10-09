@@ -16,12 +16,12 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
+import com.example.mytamagotchi.Pets.Cat;
+import com.example.mytamagotchi.Pets.Dog;
 import com.example.mytamagotchi.Ulities.DateObj;
 import com.example.mytamagotchi.Ulities.TimeHandler;
 import com.example.mytamagotchi.Ulities.valuesObj;
-import com.mikhaellopez.circularfillableloaders.CircularFillableLoaders;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,14 +64,6 @@ public class playActivity extends AppCompatActivity {
         extras = getIntent().getExtras();
         tempString = (String) extras.getString("petsArray");
         pos = extras.getInt("count");
-        YoYo.with(Techniques.RotateIn)
-                .duration(700)
-                .repeat(5)
-                .playOn(findViewById(R.id.waterinttext));
-        YoYo.with(Techniques.Bounce)
-                .duration(700)
-                .repeat(5)
-                .playOn(findViewById(R.id.loadedpetname));
         Log.d("Dozr",tempString);
 
         try {
@@ -111,8 +103,8 @@ public class playActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public valuesObj ValuesMmnipulation(JSONObject jsonObject
-    ){
+    public valuesObj ValuesMmnipulation(JSONObject jsonObject){
+        valuesObj pet = new valuesObj();
         try {
             String lastTime = jsonObject.getString("lastTime");
             String lastDate = jsonObject.getString("lastDate");
@@ -124,16 +116,30 @@ public class playActivity extends AppCompatActivity {
                 Log.d("test", String.valueOf(dateObj.hours));
                 Log.d("test", String.valueOf(dateObj.mins));
             }
-            valuesObj values = new valuesObj(
-                    jsonObject.getInt("Age"),jsonObject.getInt("Water"),jsonObject.getInt("Hunger"),jsonObject.getInt("Happy"),jsonObject.getInt("Health")
-            );
-            values.setAge( values.getAge() );
-            return values;
+
+            if(jsonObject.getString("Type").equals("Cat")) {
+                pet = new Cat(
+                        jsonObject.getInt("Age"),
+                        jsonObject.getInt("Water"),
+                        jsonObject.getInt("Hunger"),
+                        jsonObject.getInt("Happy"),
+                        jsonObject.getInt("Health")
+                );
+            } else {
+                pet = new Dog(
+                        jsonObject.getInt("Age"),
+                        jsonObject.getInt("Water"),
+                        jsonObject.getInt("Hunger"),
+                        jsonObject.getInt("Happy"),
+                        jsonObject.getInt("Health")
+                );
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return pet;
     }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mealbutton:
